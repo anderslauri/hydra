@@ -21,77 +21,24 @@ builds:
       - CGO_ENABLED=0
     goarch:
       - amd64
-      - 386
-      - arm
-      - arm64
-    goarm:
-      - 5
-      - 6
-      - 7
     goos:
       # See https://github.com/DataDog/dd-trace-go/issues/753
       # See https://github.com/DataDog/dd-trace-go/pull/754
       # - freebsd
       - linux
-      - windows
-      - darwin
 
 archives:
   - builds:
       - hydra
     id: hydra-archive
     replacements:
-      darwin: macOS
-      386: 32-bit
       amd64: 64-bit
-    format_overrides:
-      - goos: windows
-        format: zip
 
 snapshot:
   name_template: "{{ .Tag }}-next"
 changelog:
   sort: asc
-brews:
-  - tap:
-      owner: ory
-      name: homebrew-hydra
-    goarm: 6
-    ids:
-    - hydra-archive
-    homepage:  https://www.ory.sh
-    commit_author:
-      name: aeneasr
-      email: aeneas@ory.sh
 
-scoop:
-  bucket:
-    owner: ory
-    name: scoop-hydra
-  homepage:  https://www.ory.sh
-  commit_author:
-    name: aeneasr
-    email: aeneas@ory.sh
-
-dockers:
-  - dockerfile: Dockerfile
-    binaries:
-      - hydra
-    image_templates:
-      - "oryd/hydra:v{{ .Major }}"
-      - "oryd/hydra:v{{ .Major }}.{{ .Minor }}"
-      - "oryd/hydra:v{{ .Major }}.{{ .Minor }}.{{ .Patch }}"
-      - "oryd/hydra:{{ .Tag }}"
-      - "oryd/hydra:latest"
-  - dockerfile: Dockerfile-alpine
-    binaries:
-      - hydra
-    image_templates:
-      - "oryd/hydra:v{{ .Major }}-alpine"
-      - "oryd/hydra:v{{ .Major }}.{{ .Minor }}-alpine"
-      - "oryd/hydra:v{{ .Major }}.{{ .Minor }}.{{ .Patch }}-alpine"
-      - "oryd/hydra:{{ .Tag }}-alpine"
-      - "oryd/hydra:latest-alpine"
 
 release:
   prerelease: auto
