@@ -20,18 +20,8 @@ builds:
       - CGO_ENABLED=0
     goarch:
       - amd64
-      - 386
-      - arm
-      - arm64
-    goarm:
-      - 5
-      - 6
-      - 7
     goos:
-      - freebsd
       - linux
-      - windows
-      - darwin
 
 archives:
   - id: hydra-sqlite
