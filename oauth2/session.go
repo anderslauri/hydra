@@ -56,7 +56,7 @@ func (s *Session) GetJWTClaims() jwt.JWTClaimsContainer {
 		Extra:     map[string]interface{}{"ext": s.Extra},
 		ExpiresAt: s.GetExpiresAt(fosite.AccessToken),
 		IssuedAt:  time.Now(),
-		NotBefore: time.Now(),
+		NotBefore: time.Now().Add(-10 * time.Second),
 
 		// No need to set the audience because that's being done by fosite automatically.
 		// Audience:  s.Audience,
