@@ -117,39 +117,9 @@ scoop:
 checksum:
   algorithm: sha256
 
-dockers:
-  - dockerfile: .docker/Dockerfile-sqlite
-    ids:
-      - hydra-sqlite-linux-libmusl
-    image_templates:
-      - "oryd/hydra:v{{ .Major }}-sqlite"
-      - "oryd/hydra:v{{ .Major }}.{{ .Minor }}-sqlite"
-      - "oryd/hydra:v{{ .Major }}.{{ .Minor }}.{{ .Patch }}-sqlite"
-      - "oryd/hydra:{{ .Tag }}-sqlite"
-      - "oryd/hydra:latest-sqlite"
-  - dockerfile: .docker/Dockerfile-scratch
-    ids:
-      - hydra
-    image_templates:
-      - "oryd/hydra:v{{ .Major }}"
-      - "oryd/hydra:v{{ .Major }}.{{ .Minor }}"
-      - "oryd/hydra:v{{ .Major }}.{{ .Minor }}.{{ .Patch }}"
-      - "oryd/hydra:{{ .Tag }}"
-      - "oryd/hydra:latest"
-  - dockerfile: .docker/Dockerfile-alpine
-    ids:
-      - hydra
-    image_templates:
-      - "oryd/hydra:v{{ .Major }}-alpine"
-      - "oryd/hydra:v{{ .Major }}.{{ .Minor }}-alpine"
-      - "oryd/hydra:v{{ .Major }}.{{ .Minor }}.{{ .Patch }}-alpine"
-      - "oryd/hydra:{{ .Tag }}-alpine"
-      - "oryd/hydra:latest-alpine"
 
 release:
   prerelease: auto
   name_template: "{{.Tag}}"
   ids:
-    - hydra-sqlite
-    - hydra-sqlite-libmusl
     - hydra
