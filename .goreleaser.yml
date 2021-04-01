@@ -24,57 +24,11 @@ builds:
       - linux
 
 archives:
-  - id: hydra-sqlite
-    builds:
-      - hydra-sqlite-windows
-      - hydra-sqlite-darwin
-      - hydra-sqlite-linux
-    replacements:
-      darwin: macos
-      386: 32bit
-      amd64: 64bit
-      arm: arm32
-    format_overrides:
-      -
-        goos: windows
-        format: zip
-    files:
-      - CHANGELOG.md
-      - LICENSE
-      - README.md
-      - SECURITY.md
-    name_template: "{{ .ProjectName }}_{{ .Version }}-sqlite_{{ .Os }}_{{ .Arch }}{{ if .Arm }}v{{ .Arm }}{{ end }}"
-
-  - id: hydra-sqlite-libmusl
-    builds:
-      - hydra-sqlite-linux-libmusl
-    replacements:
-      darwin: macos
-      386: 32bit
-      amd64: 64bit
-      arm: arm32
-    format_overrides:
-      -
-        goos: windows
-        format: zip
-    files:
-      - CHANGELOG.md
-      - LICENSE
-      - README.md
-      - SECURITY.md
-    name_template: "{{ .ProjectName }}_{{ .Version }}-sqlite-libmusl_{{ .Os }}_{{ .Arch }}{{ if .Arm }}v{{ .Arm }}{{ end }}"
-
   - id: hydra
     builds:
       - hydra
     replacements:
-      darwin: macos
-      386: 32bit
       amd64: 64bit
-      arm: arm32
-    format_overrides:
-      - goos: windows
-        format: zip
     files:
       - CHANGELOG.md
       - LICENSE
@@ -91,28 +45,6 @@ changelog:
       - ci skip
       - Merge pull request
       - Merge branch
-
-brews:
-  - tap:
-      owner: ory
-      name: homebrew-hydra
-    ids:
-      - hydra-sqlite
-    homepage:  https://www.ory.sh
-    commit_author:
-      name: aeneasr
-      email: 3372410+aeneasr@users.noreply.github.com
-    install: |
-      bin.install "hydra"
-
-scoop:
-  bucket:
-    owner: ory
-    name: scoop-hydra
-  homepage:  https://www.ory.sh
-  commit_author:
-    name: aeneasr
-    email: 3372410+aeneasr@users.noreply.github.com
 
 checksum:
   algorithm: sha256
