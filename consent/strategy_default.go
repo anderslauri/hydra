@@ -674,7 +674,24 @@ func (s *DefaultStrategy) executeBackChannelLogout(ctx context.Context, r *http.
 		clientID string
 	}
 
+	if values, _ := url.ParseQuery(r.URL.RawQuery); len(values["aud"]) > 0 {
+		c := make(map[string]int, len(clients))
+
+		for i, client := range clients {
+			c[client.OutfacingID] = i
+		}
+		// Only support logout of distinct clients which are configured,
+		// remove clients from slice once identified, order is not kept.
+		for _, value := range values["aud"] {
+			if _, ok := c[value]; !ok {
+				continue
+			}
+			clients[c[value]] = clients[len(clients)-1]
+			clients = clients[:len(clients)-1]
+		}
+	}
 	var tasks []task
+
 	for _, c := range clients {
 		// Getting the forced obfuscated login session is tricky because the user id could be obfuscated with a new
 		// ID every time the algorithm is used. Thus, we would only get the most recent version. It therefore makes
@@ -682,7 +699,6 @@ func (s *DefaultStrategy) executeBackChannelLogout(ctx context.Context, r *http.
 		//
 		// s.r.ConsentManager().GetForcedObfuscatedLoginSession(context.Background(), subject, <missing>)
 		// sub := s.obfuscateSubjectIdentifier(c, subject, )
-
 		t, _, err := s.r.OpenIDJWTStrategy().Generate(ctx, jwtgo.MapClaims{
 			"iss":    s.c.IssuerURL().String(),
 			"aud":    []string{c.OutfacingID},
