@@ -680,13 +680,16 @@ func (s *DefaultStrategy) executeBackChannelLogout(ctx context.Context, r *http.
 		for i, client := range clients {
 			c[client.OutfacingID] = i
 		}
-		// Only support logout of distinct clients which are configured,
-		// remove clients from slice once identified, order is not kept.
+		// Only accept logout of distinct clients which are configured,
+		// ensure boundary check by deleting clients once found in map.
 		for _, value := range values["aud"] {
-			if _, ok := c[value]; !ok {
+			i, ok := c[value]
+			if !ok {
 				continue
 			}
-			clients[c[value]] = clients[len(clients)-1]
+			delete(c, value)
+
+			clients[i] = clients[len(clients)-1]
 			clients = clients[:len(clients)-1]
 		}
 	}
